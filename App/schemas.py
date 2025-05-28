@@ -20,21 +20,6 @@ class User(UserBase):
     class Config:
         orm_mode = True
 
-class RessourceBase(BaseModel):
-    titre: str
-    type: str
-    auteur: str
-
-class RessourceCreate(RessourceBase):
-    pass
-
-class Ressource(RessourceBase):
-    id: str
-    disponible: bool
-
-    class Config:
-        orm_mode = True
-
 class EmpruntBase(BaseModel):
     user_id: str
     ressource_id: str
@@ -63,3 +48,13 @@ class RessourceBase(BaseModel):
     titre: str
     type: RessourceType 
     auteur: str
+    
+class RessourceCreate(RessourceBase):
+    pass
+
+class Ressource(RessourceBase):
+    id: str
+    disponible: bool
+
+    class Config:
+        orm_mode = True

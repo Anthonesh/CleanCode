@@ -14,7 +14,7 @@ class User(Base):
     mail = Column(String, nullable=False, unique=True)
     numero_telephone = Column(String, nullable=False)
     nationalite = Column(String, nullable=False)
-    emprunts = relationship("Emprunt", back_populates="user")
+    emprunts = relationship("Emprunt",back_populates="user",cascade="all, delete-orphan",passive_deletes=True,)
 
 class Ressource(Base):
     __tablename__ = "ressources"
@@ -23,13 +23,13 @@ class Ressource(Base):
     type = Column(String, nullable=False)
     auteur = Column(String, nullable=False)
     disponible = Column(Boolean, default=True)
-    emprunts = relationship("Emprunt", back_populates="ressource")
+    emprunts = relationship("Emprunt",back_populates="ressource",cascade="all, delete-orphan",passive_deletes=True,)
 
 class Emprunt(Base):
     __tablename__ = "emprunts"
     id = Column(String, primary_key=True, default=gen_uuid)
-    user_id = Column(String, ForeignKey('users.id'), nullable=False)
-    ressource_id = Column(String, ForeignKey('ressources.id'), nullable=False)
+    user_id = Column(String,ForeignKey('users.id', ondelete="CASCADE"),nullable=False)
+    ressource_id = Column(String,ForeignKey('ressources.id', ondelete="CASCADE"),nullable=False)
     date_emprunt = Column(Date, nullable=False)
     date_retour = Column(Date, nullable=False)
     user = relationship("User", back_populates="emprunts")

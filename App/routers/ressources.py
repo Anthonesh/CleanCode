@@ -4,6 +4,8 @@ from App import schemas, crud, database
 from typing import Optional
 from App.schemas import RessourceType
 
+RESSOURCES_NOT_FOUND = "Ressource non trouvée"
+
 router = APIRouter(
     prefix="/ressources",
     tags=["ressources"]
@@ -39,19 +41,18 @@ def list_ressources(
 def get_ressource(ressource_id: str, db: Session = Depends(get_db)):
     ressource = crud.get_ressource(db, ressource_id)
     if not ressource:
-        raise HTTPException(status_code=404, detail="Ressource non trouvée")
+        raise HTTPException(status_code=404, detail=RESSOURCES_NOT_FOUND)
     return ressource
 
 @router.put("/{ressource_id}", response_model=schemas.Ressource)
 def update_ressource(ressource_id: str, ressource: schemas.RessourceCreate, db: Session = Depends(get_db)):
     updated = crud.update_ressource(db, ressource_id, ressource)
     if not updated:
-        raise HTTPException(status_code=404, detail="Ressource non trouvée")
+        raise HTTPException(status_code=404, detail=RESSOURCES_NOT_FOUND)
     return updated
 
 @router.delete("/{ressource_id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_ressource(ressource_id: str, db: Session = Depends(get_db)):
     deleted = crud.delete_ressource(db, ressource_id)
     if not deleted:
-        raise HTTPException(status_code=404, detail="Ressource non trouvée")
-    return
+        raise HTTPException(status_code=404, detail=RESSOURCES_NOT_FOUND)
