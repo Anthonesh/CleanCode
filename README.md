@@ -87,6 +87,7 @@ source venv/bin/activate      # ou venv\Scripts\activate sous Windows
 pip install -r requirements.txt
 
 # 3. Paramétrer la base de données (voir database.py)
+#Créer le fichier .env afin de définir les variables d'environnements de PostgreSQL
 
 # 4. Lancer la migration (si Alembic) OU créer les tables automatiquement
 python -m App.models
@@ -96,6 +97,9 @@ python -m App.fixtures
 
 # 6. Lancer l'API
 uvicorn App.main:app --reload
+
+#7. Lancer la création du rapport de tests unitaires pour avoir un retour sur le "coverage"
+pytest --cov=App --cov-report=xml Tests/
 
 # Accéder à l'API
 [http://localhost:8000/docs] #(Swagger)
