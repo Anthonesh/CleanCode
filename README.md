@@ -51,17 +51,52 @@ Toutes les entités sont identifiées par un UUID (jamais d’ID auto-incrément
 
 ## Structure du projet
 
-├── App/  
-│ ├── init.py  
-│ ├── main.py # Point d'entrée FastAPI  
-│ ├── models.py # Modèles SQLAlchemy  
-│ ├── schemas.py # Schémas Pydantic  
-│ ├── database.py # Connexion et session DB  
-│ ├── routers/ # Dossiers pour routes users/ressources/emprunts  
-│ └── fixtures.py # Remplissage de la base (données exemples)  
-├── requirements.txt  
-├── README.md  
-├── sonar-project.properties  
+.
+├── app/
+│   ├── api/                    # code FastAPI
+│   │   ├── main.py             # point d’entrée + création tables à startup
+│   │   ├── dependencies.py     # providers DB et services
+│   │   └── routers/            # définition des endpoints
+│   │       ├── user.py
+│   │       ├── ressource.py
+│   │       └── emprunt.py
+│   │
+│   ├── db/                     # configuration de la base
+│   │   ├── base.py             # Engine, SessionLocal, Base
+│   │   └── init_db.py          # script d’initialisation des tables
+│   │
+│   ├── models/                 # SQLAlchemy models
+│   │   ├── user.py
+│   │   ├── ressource.py
+│   │   ├── emprunt.py
+│   │   └── utils.py            # génération d’UUID
+│   │
+│   ├── schemas/                # Pydantic schemas
+│   │   ├── user.py
+│   │   ├── ressource.py
+│   │   └── emprunt.py
+│   │
+│   ├── repositories/           # opérations CRUD basiques
+│   │   ├── user.py
+│   │   ├── ressource.py
+│   │   └── emprunt.py
+│   │
+│   └── services/               # logique métier & validation
+│       ├── user.py
+│       ├── ressource.py
+│       └── emprunt.py
+│
+├── scripts/                    # scripts d’administration
+│   └── load_fixtures.py        # chargement de données d’exemple
+│
+├── tests/                      # tests pytest (unitaires & intégration)
+│   ├── conftest.py             # fixtures globales
+│   ├── fixtures/               # factories de données
+│   └── test_*.py               # fichiers de tests
+│
+├── requirements.txt
+├── README.md                   # ce fichier
+└── sonar-project.properties
 
 
 ---
@@ -77,29 +112,28 @@ Toutes les entités sont identifiées par un UUID (jamais d’ID auto-incrément
 ### Installation
 
 ```bash
-# 1. Cloner le dépôt
-git clone https://github.com/Anthonesh/CleanCode.git
-cd CleanCode
+# 1. Cloner
+git clone https://github.com/ton-repo/mediathèque-api.git
+cd mediathèque-api
 
-# 2. Installer les dépendances
+# 2. Environnement virtuel + dépendances
 python -m venv venv
-source venv/bin/activate      # ou venv\Scripts\activate sous Windows
+source venv/bin/activate  # ou venv\Scripts\activate
 pip install -r requirements.txt
 
-# 3. Paramétrer la base de données (voir database.py)
-#Créer le fichier .env afin de définir les variables d'environnements de PostgreSQL
+# 3. Configurer la DB
+cp .env.example .env
+# éditer .env pour renseigner POSTGRES_USER, PASSWORD, HOST, DB, PORT
 
-# 4. Lancer la migration (si Alembic) OU créer les tables automatiquement
-python -m App.models
+# 4. Créer les tables
+python -m app.db.init_db
 
-# 5. Remplir la base avec les données d'exemple
-python -m App.fixtures
+# 5. Charger les fixtures
+python scripts/load_fixtures.py
 
-# 6. Lancer l'API
-uvicorn App.main:app --reload
-
-#7. Lancer la création du rapport de tests unitaires pour avoir un retour sur le "coverage"
-pytest --cov=App --cov-report=xml Tests/
+# 6. Lancer l’API
+uvicorn app.api.main:app --reload
+```
 
 # Accéder à l'API
 [http://localhost:8000/docs] #(Swagger)
