@@ -129,7 +129,7 @@ cp .env.example .env
 python -m app.db.init_db
 
 # 5. Charger les fixtures
-python scripts/load_fixtures.py
+python -m scripts.load_fixtures.py
 
 # 6. Lancer l’API
 uvicorn app.api.main:app --reload
