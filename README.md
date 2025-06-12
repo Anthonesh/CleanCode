@@ -52,51 +52,49 @@ Toutes les entités sont identifiées par un UUID (jamais d’ID auto-incrément
 ## Structure du projet
 
 .
-├── app/
-│   ├── api/                    # code FastAPI
-│   │   ├── main.py             # point d’entrée + création tables à startup
-│   │   ├── dependencies.py     # providers DB et services
-│   │   └── routers/            # définition des endpoints
-│   │       ├── user.py
-│   │       ├── ressource.py
-│   │       └── emprunt.py
+├── app/  
+│   ├── api/  
+│   │   ├── main.py  
+│   │   ├── dependencies.py  
+│   │   └── routers/  
+│   │       ├── user.py  
+│   │       ├── ressource.py  
+│   │       └── emprunt.py  
+│   │  
+│   ├── db/ #initialisation base de données  
+│   │   ├── base.py  
+│   │   └── init_db.py  
+│   │  
+│   ├── models/ # models base de données  
+│   │   ├── user.py  
+│   │   ├── ressource.py  
+│   │   ├── emprunt.py  
+│   │   └── utils.py  
+│   │  
+│   ├── schemas/ #schemas pydantic  
+│   │   ├── user.py  
+│   │   ├── ressource.py  
+│   │   └── emprunt.py  
+│   │  
+│   ├── repositories/ # opérations CRUD basiques  
+│   │   ├── user.py  
+│   │   ├── ressource.py  
+│   │   └── emprunt.py  
 │   │
-│   ├── db/                     # configuration de la base
-│   │   ├── base.py             # Engine, SessionLocal, Base
-│   │   └── init_db.py          # script d’initialisation des tables
-│   │
-│   ├── models/                 # SQLAlchemy models
-│   │   ├── user.py
-│   │   ├── ressource.py
-│   │   ├── emprunt.py
-│   │   └── utils.py            # génération d’UUID
-│   │
-│   ├── schemas/                # Pydantic schemas
-│   │   ├── user.py
-│   │   ├── ressource.py
-│   │   └── emprunt.py
-│   │
-│   ├── repositories/           # opérations CRUD basiques
-│   │   ├── user.py
-│   │   ├── ressource.py
-│   │   └── emprunt.py
-│   │
-│   └── services/               # logique métier & validation
-│       ├── user.py
-│       ├── ressource.py
-│       └── emprunt.py
+│   └── services/ # logique métier & validation  
+│       ├── user.py  
+│       ├── ressource.py  
+│       └── emprunt.py  
+│  
+├── scripts/ # scripts d’administration  
+│   └── load_fixtures.py # chargement de données d’exemple  
 │
-├── scripts/                    # scripts d’administration
-│   └── load_fixtures.py        # chargement de données d’exemple
-│
-├── tests/                      # tests pytest (unitaires & intégration)
-│   ├── conftest.py             # fixtures globales
-│   ├── fixtures/               # factories de données
-│   └── test_*.py               # fichiers de tests
-│
-├── requirements.txt
-├── README.md                   # ce fichier
-└── sonar-project.properties
+├── tests/ # tests pytest   
+│   └── test_app.py # fichiers de tests  
+│  
+├── requirements.txt  
+├── README.md  
+└── sonar-project.properties  
 
 
 ---
@@ -110,6 +108,7 @@ Toutes les entités sont identifiées par un UUID (jamais d’ID auto-incrément
 - [Docker](https://www.docker.com/) (pour SonarQube)
 
 ### Installation
+## API
 
 ```bash
 # 1. Cloner
@@ -137,3 +136,14 @@ uvicorn app.api.main:app --reload
 
 # Accéder à l'API
 [http://localhost:8000/docs] #(Swagger)
+
+## Front
+
+```bash
+    # 1. Installer les dépendances
+    npm install
+
+    # 2. Lancer le serveur
+    npm run dev
+
+```
